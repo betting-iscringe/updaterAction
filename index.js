@@ -2,28 +2,23 @@ const core = require("@actions/core");
 const fs = require("fs");
 
 const folders = ["divegrass", "etc", "hfz"];
-
+const baseDir = process.env.GITHUB_WORKSPACE;
 const createIndex = (folderName) => {
+  const folderDir = `${baseDir}/${folderName}`;
   let files = fs
-    .readdirSync(`${process.env.GITHUB_WORKSPACE}/${folderName}`)
+    .readdirSync(folderDir)
     .filter((fileName) => fileName !== "index.json")
     .sort((a, b) => {
       // sort by descending creation date
-      let aStat = fs.statSync(
-          `${process.env.GITHUB_WORKSPACE}/${folderName}/${a}`
-        ),
-        bStat = fs.statSync(
-          `${process.env.GITHUB_WORKSPACE}/${folderName}/${b}`
-        );
+      let aStat = fs.statSync(`${folderDir}/${a}`),
+        bStat = fs.statSync(`${folderDir}/${b}`);
       return (
         new Date(aStat.birthtime).getTime() -
         new Date(bStat.birthtime).getTime()
       );
     })
     .map((fileName) => fileName.slice(0, -5));
-  let {
-    names: eventNames,
-  } = require(`${process.env.GITHUB_WORKSPACE}/${folderName}/index.json`);
+  let { names: eventNames } = require(`${folderDir}/index.json`);
   let fileSet = new Set(files);
   let eventSet = new Set(eventNames);
   eventSet.forEach((file) => !fileSet.has(file) && eventSet.delete(file)); // remove nonexistent files from index.json
@@ -37,10 +32,7 @@ const createIndex = (folderName) => {
   ) {
     // write new index.json if event names list dont match
     const indexContent = JSON.stringify({ names: newEventNames }, null, 2);
-    fs.writeFileSync(
-      `${process.env.GITHUB_WORKSPACE}/${folderName}/index.json`,
-      indexContent
-    );
+    fs.writeFileSync(`${folderDir}/index.json`, indexContent);
     core.info(`Updated: ${folderName}/index.json`);
     return true;
   }
