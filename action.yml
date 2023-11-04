@@ -1,0 +1,10 @@
+name: 'Update Indices'
+description: 'Update index.json based on file changes'
+outputs:
+  hasUpdates:
+    description: 'Flag if any index was updated'
+  folders:
+    description: 'Folders updated concatenated by comma'
+runs:
+  using: 'node20'
+  main: 'index.js'
