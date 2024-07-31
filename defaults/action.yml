@@ -1,0 +1,13 @@
+name: 'Update defaults'
+description: 'Update index.json default'
+outputs:
+  hasUpdates:
+    description: 'Flag if any index was updated'
+inputs:
+  default:
+    description: 'Event to set as default'
+    required: true
+    default: 'hfz'
+runs:
+  using: 'node20'
+  main: 'index.js'
