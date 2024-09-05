@@ -7,4 +7,4 @@ outputs:
     description: 'Folders updated concatenated by comma'
 runs:
   using: 'node20'
-  main: 'index.js'
+  main: 'dist/index.js'
