@@ -1,7 +1,7 @@
 const core = require("@actions/core");
 const fs = require("fs");
 
-const folders = ["divegrass", "etc", "hfz"];
+const folders = ["divegrass", "etc", "hfz", "vtrp"];
 const baseDir = process.env.GITHUB_WORKSPACE;
 const createIndex = (folderName) => {
   const folderDir = `${baseDir}/${folderName}`;
